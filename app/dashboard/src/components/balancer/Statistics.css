@@ -1,0 +1,115 @@
+.statistics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  background: #F9FAFB;
+  border: 1px solid #d2d2d4;
+  border-radius: 12px;
+  transition: all 0.2s;
+  animation: fadeIn 0.3s ease-in-out;
+  box-shadow: none;
+}
+
+.stat-card:hover {
+  box-shadow: none;
+}
+
+.stat-card.success:hover {
+  border-color: var(--secondary);
+}
+
+.stat-card.primary:hover {
+  border-color: var(--primary);
+}
+
+.stat-card.info:hover {
+  border-color: #3498db;
+}
+
+.stat-card.warning:hover {
+  border-color: var(--warning);
+}
+
+.stat-card.danger:hover {
+  border-color: var(--danger);
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 5px;
+  flex-shrink: 0;
+  position: relative;
+  color: white;
+}
+
+.stat-card.success .stat-icon,
+.stat-card.primary .stat-icon,
+.stat-card.info .stat-icon,
+.stat-card.warning .stat-icon,
+.stat-card.danger .stat-icon {
+  background: rgba(57, 111, 228, 0.5);
+}
+
+.stat-icon::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: calc(100% + 10px);
+  height: calc(100% + 10px);
+  background: rgba(57, 111, 228, 0.4);
+  border-radius: 8px;
+  z-index: -1;
+}
+
+.stat-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #718096;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1A202C;
+}
+
+@media (max-width: 768px) {
+  .statistics {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  
+  .stat-card {
+    padding: 16px;
+  }
+  
+  .stat-icon {
+    font-size: 24px;
+  }
+  
+  .stat-value {
+    font-size: 20px;
+  }
+}

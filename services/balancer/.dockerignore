@@ -1,0 +1,36 @@
+# Игнорируем зависимости
+node_modules/
+client/node_modules/
+
+# Игнорируем исходники фронтенда (только build нужен)
+client/src/
+client/public/
+
+# Игнорируем данные
+data/
+logs/
+*.db
+*.db-journal
+
+# Игнорируем env файлы
+.env
+.env.local
+.env.development
+
+# Игнорируем логи
+*.log
+npm-debug.log*
+
+# Игнорируем системные файлы
+.DS_Store
+Thumbs.db
+
+# Игнорируем IDE файлы
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Игнорируем временные файлы
+*.tmp
+*.temp

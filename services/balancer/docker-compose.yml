@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  proxy-balancer:
+    build: .
+    container_name: proxy-balancer
+    restart: unless-stopped
+    network_mode: host
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - NODE_ENV=production
+      - PORT=7777
+      - METRICS_PORT=9000
+      - SESSION_SECRET=${SESSION_SECRET}
+      - ADMIN_USERNAME=${ADMIN_USERNAME}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}

@@ -1,0 +1,284 @@
+{
+  "log": {
+    "loglevel": "warning"
+  },
+  "dns": {
+    "servers": [
+      {
+        "address": "77.88.8.8",
+        "port": 53,
+        "domains": [
+          "domain:ru",
+          "domain:su",
+          "domain:xn--p1ai",
+          "geosite:yandex",
+          "geosite:vk",
+          "geosite:mailru",
+          "domain:avito.ru"
+        ]
+      },
+      "8.8.8.8",
+      "1.1.1.1"
+    ]
+  },
+  "inbounds": [
+    {
+      "tag": "VLESS-WS-TLS",
+      "port": 444,
+      "listen": "0.0.0.0",
+      "protocol": "vless",
+      "settings": {
+        "clients": [],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/"
+        },
+        "security": "tls",
+        "tlsSettings": {
+          "fingerprint": "chrome",
+          "certificates": [
+            {
+              "certificateFile": "/var/lib/marzban/certs/fullchain.pem",
+              "keyFile": "/var/lib/marzban/certs/key.pem"
+            }
+          ],
+          "alpn": [
+            "h2",
+            "http/1.1"
+          ]
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "tag": "VLESS-WS-CDN",
+      "port": 8443,
+      "listen": "0.0.0.0",
+      "protocol": "vless",
+      "settings": {
+        "clients": [],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/ws"
+        },
+        "security": "tls",
+        "tlsSettings": {
+          "fingerprint": "chrome",
+          "certificates": [
+            {
+              "certificateFile": "/var/lib/marzban/certs/fullchain.pem",
+              "keyFile": "/var/lib/marzban/certs/key.pem"
+            }
+          ],
+          "alpn": [
+            "h2",
+            "http/1.1"
+          ]
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "tag": "SHADOWSOCKS",
+      "port": 2060,
+      "listen": "0.0.0.0",
+      "protocol": "shadowsocks",
+      "settings": {
+        "clients": [],
+        "network": "tcp,udp",
+        "method": "chacha20-ietf-poly1305"
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "BALANCER",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "127.0.0.1",
+            "port": 7777,
+            "users": []
+          }
+        ]
+      },
+      "streamSettings": {
+        "sockopt": {
+          "mark": 255
+        }
+      }
+    },
+    {
+      "tag": "UDP_PROXY",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "145.249.115.86",
+            "port": 443,
+            "users": [
+              {
+                "id": "66ec925d-9939-4351-a2e1-a7a096c46e19",
+                "flow": "xtls-rprx-vision",
+                "encryption": "none"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "fingerprint": "chrome",
+          "serverName": "www.google.com",
+          "publicKey": "wcBiDP5i-Vzk7a-M8wPgIvBYpv-IAIGLdKF460HQR2Q",
+          "shortId": "84a08957",
+          "spiderX": ""
+        }
+      }
+    },
+    {
+      "tag": "DIRECT",
+      "protocol": "freedom",
+      "settings": {}
+    },
+    {
+      "tag": "BLOCK",
+      "protocol": "blackhole",
+      "settings": {}
+    }
+  ],
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "domain": [
+          "domain:avito.ru",
+          "domain:avito.st",
+          "domain:rutube.ru",
+          "geosite:rutube",
+          "domain:vk.com",
+          "domain:vk.me",
+          "domain:vkontakte.ru",
+          "domain:userapi.com"
+        ],
+        "outboundTag": "DIRECT"
+      },
+      {
+        "type": "field",
+        "ip": [
+          "geoip:private",
+          "89.23.113.155",
+          "145.249.115.86"
+        ],
+        "outboundTag": "DIRECT"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "ghost.connect-i-tochka.ru",
+          "domain:connect-i-tochka.ru"
+        ],
+        "outboundTag": "DIRECT"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:steam",
+          "domain:dota2.com",
+          "domain:valvesoftware.com"
+        ],
+        "outboundTag": "DIRECT"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:category-ads-all"
+        ],
+        "outboundTag": "BLOCK"
+      },
+      {
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "BLOCK"
+      },
+      {
+        "type": "field",
+        "network": "udp",
+        "port": "443",
+        "outboundTag": "BLOCK"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:google",
+          "geosite:youtube",
+          "geosite:google-play"
+        ],
+        "outboundTag": "UDP_PROXY"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "domain:facebook.com",
+          "domain:whatsapp.com",
+          "domain:whatsapp.net",
+          "domain:fbcdn.net",
+          "domain:fb.com"
+        ],
+        "outboundTag": "UDP_PROXY"
+      },
+      {
+        "type": "field",
+        "network": "tcp",
+        "ip": [
+          "::/0"
+        ],
+        "outboundTag": "UDP_PROXY"
+      },
+      {
+        "type": "field",
+        "network": "udp",
+        "outboundTag": "UDP_PROXY"
+      },
+      {
+        "type": "field",
+        "network": "tcp",
+        "outboundTag": "BALANCER"
+      }
+    ]
+  }
+}

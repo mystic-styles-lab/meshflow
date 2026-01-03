@@ -1,0 +1,404 @@
+.live-console {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  margin-top: 20px;
+}
+
+.live-console .console-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.live-console .console-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.live-console .console-title h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.2);
+}
+
+.connection-status.connected {
+  color: #4ade80;
+}
+
+.connection-status.disconnected {
+  color: #f87171;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.connection-status.disconnected .status-dot {
+  animation: none;
+}
+
+.console-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--bg-dark);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: white;
+}
+
+.tab-count {
+  background: rgba(255,255,255,0.2);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+}
+
+.tab-btn:not(.active) .tab-count {
+  background: rgba(0,0,0,0.3);
+}
+
+.error-count {
+  background: rgba(239, 68, 68, 0.3) !important;
+}
+
+.tab-btn.active .error-count {
+  background: rgba(255,255,255,0.3) !important;
+}
+
+.console-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.console-filter-input {
+  padding: 8px 12px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 13px;
+  width: 200px;
+  transition: all 0.2s;
+}
+
+.console-filter-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.console-filter-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.live-console .console-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.live-console .btn-console {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+}
+
+.live-console .btn-console:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-pause {
+  border-color: #f59e0b !important;
+  color: #f59e0b !important;
+}
+
+.btn-resume {
+  background: #22c55e !important;
+  border-color: #22c55e !important;
+  color: white !important;
+}
+
+.btn-copy {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: white !important;
+}
+
+.btn-copy:hover {
+  background: #4752c4 !important;
+}
+
+.btn-clear {
+  border-color: var(--danger) !important;
+  color: var(--danger) !important;
+}
+
+.btn-clear:hover {
+  background: var(--danger) !important;
+  color: white !important;
+}
+
+.live-console .console-body {
+  flex: 1;
+  overflow-y: auto;
+  background: #0d1117;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.live-console .console-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.live-console .console-body::-webkit-scrollbar-track {
+  background: #0d1117;
+}
+
+.live-console .console-body::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 4px;
+}
+
+.live-console .console-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-tertiary);
+  font-size: 14px;
+}
+
+.live-console .console-logs {
+  padding: 8px 0;
+}
+
+.live-console .console-log {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 16px;
+  border-left: 3px solid transparent;
+  transition: background 0.15s;
+}
+
+.live-console .console-log:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.log-time {
+  color: #6e7681;
+  min-width: 100px;
+  font-size: 11px;
+}
+
+.log-icon {
+  width: 16px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.log-target {
+  color: #58a6ff;
+  font-weight: 500;
+}
+
+.log-proxy {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+.log-retry {
+  color: #f59e0b;
+  font-size: 10px;
+  background: rgba(245, 158, 11, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.log-error-msg {
+  color: #f87171;
+  font-size: 11px;
+  margin-left: auto;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Status colors */
+.log-success {
+  border-left-color: #4ade80;
+}
+
+.log-success .log-icon {
+  color: #4ade80;
+}
+
+.log-success .log-target {
+  color: #4ade80;
+}
+
+.log-error {
+  border-left-color: #f87171;
+  background: rgba(248, 113, 113, 0.05);
+}
+
+.log-error .log-icon {
+  color: #f87171;
+}
+
+.log-pending {
+  border-left-color: #60a5fa;
+}
+
+.log-pending .log-icon {
+  color: #60a5fa;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.log-info {
+  border-left-color: #60a5fa;
+}
+
+.log-info .log-icon {
+  color: #60a5fa;
+}
+
+/* Error logs specific */
+.error-logs .console-log {
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 10px 16px;
+}
+
+.log-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.log-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.log-attempt {
+  color: #f59e0b;
+  font-size: 11px;
+}
+
+.log-error-text {
+  color: #f87171;
+  font-size: 12px;
+  background: rgba(248, 113, 113, 0.1);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  word-break: break-all;
+}
+
+.live-console .console-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: var(--bg-tertiary);
+  border-top: 1px solid var(--border-color);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.console-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.paused-badge {
+  background: #f59e0b;
+  color: #000;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 10px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}

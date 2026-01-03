@@ -1,0 +1,12 @@
+node_modules/
+client/node_modules/
+client/build/
+data/
+*.db
+*.db-shm
+*.db-wal
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store

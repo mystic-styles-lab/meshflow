@@ -1,0 +1,221 @@
+{
+  "log": {
+    "loglevel": "warning"
+  },
+  "dns": {
+    "servers": [
+      {
+        "address": "77.88.8.8",
+        "port": 53,
+        "domains": [
+          "domain:ru",
+          "domain:su",
+          "domain:xn--p1ai",
+          "geosite:yandex",
+          "geosite:vk",
+          "geosite:mailru",
+          "domain:avito.ru",
+          "domain:rutube.ru"
+        ]
+      },
+      "8.8.8.8",
+      "1.1.1.1"
+    ]
+  },
+  "inbounds": [
+    {
+      "tag": "VLESS-WS-TLS",
+      "port": 444,
+      "listen": "0.0.0.0",
+      "protocol": "vless",
+      "settings": {
+        "clients": [],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/"
+        },
+        "security": "tls",
+        "tlsSettings": {
+          "fingerprint": "chrome",
+          "certificates": [
+            {
+              "certificateFile": "/var/lib/marzban/certs/fullchain.pem",
+              "keyFile": "/var/lib/marzban/certs/key.pem"
+            }
+          ],
+          "alpn": [
+            "h2",
+            "http/1.1"
+          ]
+        }
+      },
+      "sniffing": {
+        "enabled": false
+      }
+    },
+    {
+      "tag": "SHADOWSOCKS",
+      "port": 2060,
+      "listen": "0.0.0.0",
+      "protocol": "shadowsocks",
+      "settings": {
+        "clients": [],
+        "network": "tcp,udp",
+        "method": "chacha20-ietf-poly1305"
+      },
+      "sniffing": {
+        "enabled": false
+      }
+    },
+    {
+      "tag": "VLESS-TCP-TLS",
+      "port": 8444,
+      "listen": "0.0.0.0",
+      "protocol": "vless",
+      "settings": {
+        "clients": [],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "tls",
+        "tlsSettings": {
+          "certificates": [
+            {
+              "certificateFile": "/var/lib/marzban/certs/fullchain.pem",
+              "keyFile": "/var/lib/marzban/certs/key.pem"
+            }
+          ]
+        }
+      },
+      "sniffing": {
+        "enabled": false
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "BALANCER",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "127.0.0.1",
+            "port": 7777,
+            "users": []
+          }
+        ]
+      },
+      "streamSettings": {
+        "sockopt": {
+          "mark": 255
+        }
+      }
+    },
+    {
+      "tag": "UDP_PROXY",
+      "protocol": "shadowsocks",
+      "settings": {
+        "servers": [
+          {
+            "address": "145.249.115.86",
+            "port": 8443,
+            "method": "chacha20-ietf-poly1305",
+            "password": "66ec925d-9939-4351-a2e1-a7a096c46e19"
+          }
+        ]
+      }
+    },
+    {
+      "tag": "DIRECT",
+      "protocol": "freedom",
+      "settings": {}
+    },
+    {
+      "tag": "BLOCK",
+      "protocol": "blackhole",
+      "settings": {}
+    }
+  ],
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "type": "field",
+        "domain": [
+          "domain:avito.ru",
+          "domain:avito.st",
+          "domain:rutube.ru",
+          "domain:vk.com",
+          "domain:vk.me",
+          "domain:vkontakte.ru",
+          "domain:userapi.com"
+        ],
+        "outboundTag": "DIRECT"
+      },
+      {
+        "type": "field",
+        "ip": [
+          "geoip:private",
+          "89.23.113.155",
+          "145.249.115.86"
+        ],
+        "outboundTag": "DIRECT"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "ghost.connect-i-tochka.ru",
+          "domain:connect-i-tochka.ru"
+        ],
+        "outboundTag": "DIRECT"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:steam",
+          "domain:dota2.com",
+          "domain:valvesoftware.com"
+        ],
+        "outboundTag": "DIRECT"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:category-ads-all"
+        ],
+        "outboundTag": "BLOCK"
+      },
+      {
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "BLOCK"
+      },
+      {
+        "type": "field",
+        "ip": [
+          "91.108.0.0/16",
+          "149.154.160.0/20",
+          "185.76.151.0/24"
+        ],
+        "network": "udp",
+        "outboundTag": "UDP_PROXY"
+      },
+      {
+        "type": "field",
+        "network": "udp",
+        "outboundTag": "UDP_PROXY"
+      },
+      {
+        "type": "field",
+        "network": "tcp",
+        "outboundTag": "BALANCER"
+      }
+    ]
+  }
+}

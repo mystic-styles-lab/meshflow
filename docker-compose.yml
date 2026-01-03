@@ -1,0 +1,20 @@
+services:
+  marzban:
+    build: .
+    image: marzban-integrated:latest
+    restart: always
+    env_file: .env
+    network_mode: host
+    volumes:
+      - /var/lib/marzban:/var/lib/marzban
+
+  balancer:
+    build: ./services/balancer
+    restart: always
+    network_mode: host
+    environment:
+      - NODE_ENV=production
+      - PORT=7777
+    volumes:
+      - ./services/balancer/data:/app/data
+      - ./services/balancer/logs:/app/logs
