@@ -60,6 +60,14 @@ class XRayCore:
             }
 
     def __capture_process_logs(self):
+        def capture_stderr():
+            while self.process:
+                err = self.process.stderr.readline()
+                if err:
+                    logger.error(f"Xray stderr: {err.strip()}")
+                elif not self.process or self.process.poll() is not None:
+                    break
+        
         def capture_and_debug_log():
             while self.process:
                 output = self.process.stdout.readline()
@@ -85,6 +93,7 @@ class XRayCore:
                 elif not self.process or self.process.poll() is not None:
                     break
 
+        threading.Thread(target=capture_stderr).start()
         if DEBUG:
             threading.Thread(target=capture_and_debug_log).start()
         else:
@@ -143,7 +152,15 @@ class XRayCore:
             stdout=subprocess.PIPE,
             universal_newlines=True
         )
-        self.process.stdin.write(config.to_json())
+        config_json = config.to_json()
+        logger.warning(f"Xray config length: {len(config_json)}")
+        # Save config for debugging
+        try:
+            with open('/tmp/xray_debug_config.json', 'w') as f:
+                f.write(config_json)
+        except:
+            pass
+        self.process.stdin.write(config_json)
         self.process.stdin.flush()
         self.process.stdin.close()
         logger.warning(f"Xray core {self.version} started")
