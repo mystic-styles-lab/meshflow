@@ -11,11 +11,12 @@ class TariffsManager:
     
     def add_tariff(self, name: str, price: float, duration_days: int,
                    traffic_limit: int, description: str = "",
-                   max_connections: int = 3, speed_limit: int = 0) -> int:
+                   max_connections: int = 3, speed_limit: int = 0,
+                   unlimited_traffic: bool = False) -> int:
         """Add new tariff"""
         return self.db.add_tariff(
             name, price, duration_days, traffic_limit,
-            description, max_connections, speed_limit
+            description, max_connections, speed_limit, unlimited_traffic
         )
     
     def get_tariff(self, tariff_id: int) -> Optional[Dict]:
