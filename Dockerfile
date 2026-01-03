@@ -7,6 +7,7 @@ COPY app/dashboard/package.json app/dashboard/package-lock.json ./
 RUN npm ci
 COPY app/dashboard ./
 ENV VITE_BASE_API=/api/
+ENV NODE_OPTIONS="--max-old-space-size=384"
 RUN npm run build -- --outDir build --assetsDir statics
 RUN cp ./build/index.html ./build/404.html
 

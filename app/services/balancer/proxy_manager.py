@@ -293,6 +293,23 @@ class ProxyManager:
         """Get proxy by ID"""
         return self.db.get_proxy(proxy_id)
     
+    def select_proxy(self) -> Optional[Dict]:
+        """Select best available proxy for connection (round-robin among healthy)"""
+        proxies = self.db.get_all_proxies()
+        healthy_proxies = [p for p in proxies if p.get('enabled') and p.get('isHealthy')]
+        
+        if not healthy_proxies:
+            # Fallback to any enabled proxy
+            healthy_proxies = [p for p in proxies if p.get('enabled')]
+        
+        if not healthy_proxies:
+            return None
+        
+        # Sort by priority (higher first) then by avg response time (lower first)
+        healthy_proxies.sort(key=lambda p: (-p.get('priority', 0), p.get('avgResponseTime', 9999)))
+        
+        return healthy_proxies[0]
+    
     def get_all_proxies(self) -> List[Dict]:
         """Get all proxies"""
         return self.db.get_all_proxies()
